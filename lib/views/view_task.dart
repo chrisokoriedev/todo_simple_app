@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_pad/views/edit_todo.dart';
+import 'package:timeago/timeago.dart' as timeago;
 class ViewTask extends StatelessWidget {
   String title;
   String task;
   bool status;
-  String date;
+  DateTime date;
   int index;
   ViewTask(
       {super.key,
@@ -68,26 +69,15 @@ class ViewTask extends StatelessWidget {
         IntrinsicWidth(
           stepWidth: double.infinity,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             width: double.infinity,
             color: Colors.grey[800],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  date,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-                IconButton(
-                    onPressed: () {
-                      Get.back();
-                      Get.to(EditTodo(title: title, dec: task, index: index));
-                    },
-                    icon: const Icon(Icons.edit, color: Colors.white)),
-              ],
+            child: Text(
+              timeago.format(date),
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
             ),
           ),
         ),

@@ -132,7 +132,7 @@ class _ViewTodoListState extends State<ViewTodoList> {
                               ViewTask(
                                 title: todoContent.title,
                                 task: todoContent.description,
-                                date: todoContent.dateTime.toString(),
+                                date: todoContent.dateTime,
                                 status: todoContent.status,
                                 index: index,
                               ),
