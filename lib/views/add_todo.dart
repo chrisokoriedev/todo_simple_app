@@ -114,7 +114,6 @@ class _AddTodoState extends State<AddTodo> {
                         ),
                         TextFormField(
                           cursorColor: Colors.white,
-                          maxLength: 100,
                           maxLines: null,
                           style: const TextStyle(
                               color: Colors.white, fontSize: 20),

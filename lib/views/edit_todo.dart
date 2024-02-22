@@ -126,6 +126,7 @@ class _EditTodoState extends State<EditTodo> {
                         ),
                         TextFormField(
                           initialValue: description,
+                          maxLines: null,
                           cursorColor: Colors.white,
                           style: const TextStyle(
                               color: Colors.white, fontSize: 20),

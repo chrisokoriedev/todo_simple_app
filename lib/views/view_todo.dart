@@ -6,6 +6,7 @@ import 'package:note_pad/style.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import 'add_todo.dart';
+import 'view_task.dart';
 
 class ViewTodoList extends StatefulWidget {
   const ViewTodoList({Key? key}) : super(key: key);
@@ -127,12 +128,15 @@ class _ViewTodoListState extends State<ViewTodoList> {
                       itemBuilder: (context, index) {
                         Todo? todoContent = box.getAt(index);
                         return GestureDetector(
-                          onTap: () => Get.bottomSheet(ViewTask(
-                            title: todoContent.title,
-                            task: todoContent.description,
-                            date: '',
-                            status: todoContent.status,
-                          )),
+                          onTap: () => Get.bottomSheet(
+                              ViewTask(
+                                title: todoContent.title,
+                                task: todoContent.description,
+                                date: todoContent.dateTime.toString(),
+                                status: todoContent.status,
+                                index: index,
+                              ),
+                              backgroundColor: Colors.grey[900]),
                           child: Card(
                             color: kPrimaryColor.withOpacity(0.5),
                             child: ListTile(
@@ -223,20 +227,3 @@ class _ViewTodoListState extends State<ViewTodoList> {
 }
 
 // ignore: must_be_immutable
-class ViewTask extends StatelessWidget {
-  String title;
-  String task;
-  bool status;
-  String date;
-  ViewTask(
-      {super.key,
-      required this.title,
-      required this.task,
-      required this.date,
-      required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
