@@ -1,0 +1,59 @@
+name: note_pad
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+  hive: ^2.0.1
+  hive_flutter:
+  path_provider:
+  get:
+  flutter_native_splash:
+  flutter_launcher_icons:
+  async:
+  step_progress_indicator:
+  timeago:
+
+
+dev_dependencies:
+  hive_generator: 
+  build_runner: 
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^1.0.0
+
+
+flutter_native_splash:
+    color: '#ffffff'
+    image: 'assets/splash.png'
+    image_dark: 'assets/splash.png'
+    android: true
+    ios: true
+    web: true
+    color_dark: '#1a1a1a'
+    android_gravity: fill
+
+flutter_icons:
+    android: true
+    ios: true
+    image_path: 'assets/app_icon.png'
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+     - assets/
