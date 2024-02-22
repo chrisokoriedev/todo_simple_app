@@ -75,8 +75,7 @@ class ViewTask extends StatelessWidget {
             child: Text(
               timeago.format(date),
               style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
                   color: Colors.white),
             ),
           ),
