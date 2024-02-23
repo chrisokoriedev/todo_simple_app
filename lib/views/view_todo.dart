@@ -21,8 +21,10 @@ class _ViewTodoListState extends State<ViewTodoList> {
   @override
   void initState() {
     super.initState();
-    todoBox = Hive.box<Todo>('todoBox');
-    todoBox.listenable().addListener(_updateIndicator);
+    setState(() {
+      todoBox = Hive.box<Todo>('todoBox');
+      todoBox.listenable().addListener(_updateIndicator);
+    });
   }
 
   @override
@@ -37,6 +39,8 @@ class _ViewTodoListState extends State<ViewTodoList> {
 
   @override
   Widget build(BuildContext context) {
+    int totalTasks = todoBox.length;
+    int tasksDone = todoBox.values.where((todo) => todo.status).length;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -71,154 +75,157 @@ class _ViewTodoListState extends State<ViewTodoList> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-        child: ValueListenableBuilder(
-          valueListenable: Hive.box<Todo>('todoBox').listenable(),
-          builder: (context, Box<Todo> box, _) {
-            if (box.values.isEmpty) {
-              return const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.inbox_outlined, size: 80.0, color: Colors.white70),
-                  Center(
-                    child: Text(
-                      'No task available',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              );
-            }
-            int totalTasks = box.length;
-            int tasksDone = box.values.where((todo) => todo.status).length;
-
-            return Column(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Total Tasks: $totalTasks',
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    SizedBox(
-                      width: Get.size.width * 0.6,
-                      child: StepProgressIndicator(
-                          totalSteps: totalTasks,
-                          currentStep: tasksDone,
-                          padding: 0,
-                          size: 5,
-                          selectedGradientColor: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Colors.blue, Colors.blue[400]!]),
-                          unselectedGradientColor: const LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Colors.white54, Colors.white54])),
-                    ),
-                    Text(
-                      'Tasks Done: $tasksDone',
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ],
+                Text(
+                  'Total Tasks: $totalTasks',
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: box.length,
-                      itemBuilder: (context, index) {
-                        Todo? todoContent = box.getAt(index);
-                        return Card(
-                          color: kPrimaryColor.withOpacity(0.5),
-                          child: ListTile(
-                         onTap: () => Get.bottomSheet(
-                            ViewTask(
-                              title: todoContent.title,
-                              task: todoContent.description,
-                              date: todoContent.dateTime,
-                              status: todoContent.status,
-                              index: index,
-                            ),
-                            backgroundColor: Colors.grey[900]),
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            leading: Checkbox(
-                              onChanged: (bool? value) {
-                                todoContent.status = value!;
-                                box.putAt(index, todoContent);
-                              },
-                              value: todoContent!.status,
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                Get.bottomSheet(Container(
-                                  height: 200,
-                                  color: kPrimaryColor.withOpacity(0.5),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          width: 150,
-                                          child: Image.asset(
-                                              'assets/delete.gif')),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ElevatedButton(
-                                              onPressed: () async {
-                                                await box.deleteAt(index);
-                                                Get.back();
-                                              },
-                                              child: const Text('Yes')),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          ElevatedButton(
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                              child: const Text('No')),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ));
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            title: Text(
-                              todoContent.title,
-                             
-                              style: TextStyle(
-                                  decoration: todoContent.status
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none,
-                                  color: todoContent.status
-                                      ? Colors.red
-                                      : Colors.green,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
-                            subtitle: Text(
-                              todoContent.description,
-                               maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        );
-                      }),
+                SizedBox(
+                  width: Get.size.width * 0.6,
+                  child: StepProgressIndicator(
+                      totalSteps: totalTasks,
+                      currentStep: tasksDone,
+                      padding: 0,
+                      size: 5,
+                      selectedGradientColor: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.blue, Colors.blue[400]!]),
+                      unselectedGradientColor: const LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.white54, Colors.white54])),
+                ),
+                Text(
+                  'Tasks Done: $tasksDone',
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ],
-            );
-          },
+            ),
+            ValueListenableBuilder(
+              valueListenable: Hive.box<Todo>('todoBox').listenable(),
+              builder: (context, Box<Todo> box, _) {
+                if (box.values.isEmpty) {
+                  return const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.inbox_outlined,
+                          size: 80.0, color: Colors.white70),
+                      Center(
+                        child: Text(
+                          'No task available',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: box.length,
+                          itemBuilder: (context, index) {
+                            Todo? todoContent = box.getAt(index);
+                            return Card(
+                              color: kPrimaryColor.withOpacity(0.5),
+                              child: ListTile(
+                                onTap: () => Get.bottomSheet(
+                                    ViewTask(
+                                      title: todoContent.title,
+                                      task: todoContent.description,
+                                      date: todoContent.dateTime,
+                                      status: todoContent.status,
+                                      index: index,
+                                    ),
+                                    backgroundColor: Colors.grey[900]),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                leading: Checkbox(
+                                  onChanged: (bool? value) {
+                                    todoContent.status = value!;
+                                    box.putAt(index, todoContent);
+                                  },
+                                  value: todoContent!.status,
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    Get.bottomSheet(Container(
+                                      height: 200,
+                                      color: kPrimaryColor.withOpacity(0.5),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20),
+                                              width: 150,
+                                              child: Image.asset(
+                                                  'assets/delete.gif')),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                  onPressed: () async {
+                                                    await box.deleteAt(index);
+                                                    Get.back();
+                                                  },
+                                                  child: const Text('Yes')),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: const Text('No')),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ));
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                title: Text(
+                                  todoContent.title,
+                                  style: TextStyle(
+                                      decoration: todoContent.status
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                      color: todoContent.status
+                                          ? Colors.red
+                                          : Colors.green,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20),
+                                ),
+                                subtitle: Text(
+                                  todoContent.description,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
