@@ -46,39 +46,37 @@ class _EditTodoState extends State<EditTodo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 30,
-          ),
-          child: Column(
-            children: [
-              Row(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 30,
+        ),
+        child: Column(
+          children: [
+            IntrinsicWidth(
+              stepWidth: double.infinity,
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () {},
-                    icon: IconButton(
-                        onPressed: () {
-                          if (title.isNotEmpty && description.isNotEmpty) {
-                            Box<Todo> todoBox = Hive.box<Todo>('todoBox');
-                            todoBox.putAt(
-                                widget.index,
-                                Todo(
-                                  title: title,
-                                  description: description,
-                                  dateTime: DateTime.now(),
-                                ));
-                          } else if (title == '' && description == '') {
-                            Get.back();
-                          }
+                      onPressed: () {
+                        if (title.isNotEmpty && description.isNotEmpty) {
+                          Box<Todo> todoBox = Hive.box<Todo>('todoBox');
+                          todoBox.putAt(
+                              widget.index,
+                              Todo(
+                                title: title,
+                                description: description,
+                                dateTime: DateTime.now(),
+                              ));
+                        } else if (title == '' && description == '') {
                           Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                        )),
-                  ),
+                        }
+                        Get.back();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      )),
                   IconButton(
                       onPressed: () => submitData(),
                       icon: const Icon(
@@ -87,7 +85,9 @@ class _EditTodoState extends State<EditTodo> {
                       ))
                 ],
               ),
-              Container(
+            ),
+            Expanded(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Form(
                     key: formKey,
@@ -155,8 +155,8 @@ class _EditTodoState extends State<EditTodo> {
                       ],
                     )),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

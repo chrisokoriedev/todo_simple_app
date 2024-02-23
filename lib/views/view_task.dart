@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_pad/views/edit_todo.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
 class ViewTask extends StatelessWidget {
   String title;
   String task;
@@ -53,30 +54,32 @@ class ViewTask extends StatelessWidget {
               ),
             ),
             SizedBox(height: Get.size.height * 1 / 900),
-            Padding(
+            Container(
+              height: Get.size.height * 0.4,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                children: [
-                  Text(
-                    task,
-                    style: const TextStyle(fontSize: 16, color: Colors.white60),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      task,
+                      style: const TextStyle(fontSize: 16, color: Colors.white60),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
         IntrinsicWidth(
           stepWidth: double.infinity,
+          stepHeight: 10,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             width: double.infinity,
             color: Colors.grey[800],
             child: Text(
               timeago.format(date),
-              style: const TextStyle(
-                  fontSize: 15,
-                  color: Colors.white),
+              style: const TextStyle(fontSize: 15, color: Colors.white),
             ),
           ),
         ),
