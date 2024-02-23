@@ -19,7 +19,11 @@ class _AddTodoState extends State<AddTodo> {
   submitData() async {
     if (formKey.currentState!.validate()) {
       Box<Todo> todoBox = Hive.box<Todo>('todoBox');
-      todoBox.add(Todo(title: title, description: description,  dateTime: DateTime.now(),));
+      todoBox.add(Todo(
+        title: title,
+        description: description,
+        dateTime: DateTime.now(),
+      ));
       Navigator.of(context).pop();
     }
   }
@@ -28,14 +32,15 @@ class _AddTodoState extends State<AddTodo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 30,
-          ),
-          child: Column(
-            children: [
-              Row(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 30,
+        ),
+        child: Column(
+          children: [
+            IntrinsicWidth(
+              stepWidth: double.infinity,
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
@@ -46,7 +51,8 @@ class _AddTodoState extends State<AddTodo> {
                             Box<Todo> todoBox = Hive.box<Todo>('todoBox');
                             todoBox.add(Todo(
                               title: title,
-                              description: description, dateTime: DateTime.now(),
+                              description: description,
+                              dateTime: DateTime.now(),
                             ));
                           } else if (title == '' && description == '') {
                             Get.back();
@@ -68,7 +74,9 @@ class _AddTodoState extends State<AddTodo> {
                           ))
                 ],
               ),
-              Container(
+            ),
+            Expanded(
+              child: SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Form(
@@ -151,8 +159,8 @@ class _AddTodoState extends State<AddTodo> {
                       ],
                     )),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
