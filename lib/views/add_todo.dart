@@ -85,6 +85,7 @@ class _AddTodoState extends State<AddTodo> {
                       children: [
                         TextFormField(
                           cursorColor: Colors.white,
+                          maxLength: 20,
                           style: const TextStyle(
                               color: Colors.white, fontSize: 20),
                           decoration: const InputDecoration(

@@ -122,6 +122,7 @@ class _ViewTodoListState extends State<ViewTodoList> {
                     ),
                   ],
                 ),
+              
                 Expanded(
                   child: ListView.builder(
                       itemCount: box.length,
@@ -130,15 +131,15 @@ class _ViewTodoListState extends State<ViewTodoList> {
                         return Card(
                           color: kPrimaryColor.withOpacity(0.5),
                           child: ListTile(
-                         onTap: () => Get.bottomSheet(
-                            ViewTask(
-                              title: todoContent.title,
-                              task: todoContent.description,
-                              date: todoContent.dateTime,
-                              status: todoContent.status,
-                              index: index,
-                            ),
-                            backgroundColor: Colors.grey[900]),
+                            onTap: () => Get.bottomSheet(
+                                ViewTask(
+                                  title: todoContent.title,
+                                  task: todoContent.description,
+                                  date: todoContent.dateTime,
+                                  status: todoContent.status,
+                                  index: index,
+                                ),
+                                backgroundColor: Colors.grey[900]),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             leading: Checkbox(
@@ -159,8 +160,8 @@ class _ViewTodoListState extends State<ViewTodoList> {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           width: 150,
-                                          child: Image.asset(
-                                              'assets/delete.gif')),
+                                          child:
+                                              Image.asset('assets/delete.gif')),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -192,7 +193,7 @@ class _ViewTodoListState extends State<ViewTodoList> {
                             ),
                             title: Text(
                               todoContent.title,
-                             
+                              maxLines: 1,
                               style: TextStyle(
                                   decoration: todoContent.status
                                       ? TextDecoration.lineThrough
@@ -205,7 +206,7 @@ class _ViewTodoListState extends State<ViewTodoList> {
                             ),
                             subtitle: Text(
                               todoContent.description,
-                               maxLines: 2,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   color: Colors.grey,
